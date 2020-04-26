@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Autocomplete Search'),
 
     /*
     |--------------------------------------------------------------------------
@@ -119,7 +119,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY'),
+    'key' => env('APP_KEY', "base64:/aWUwXxGdyDB2h/zbPWSFc+I8IvYUzSa16Yo2mFpvBw="),
 
     'cipher' => 'AES-256-CBC',
 
