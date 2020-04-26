@@ -55,12 +55,16 @@
                 Autocomplete Search
             </div>
             
-            <div class="input-group mb-3">
-                <input type="text" id="country" class="form-control" placeholder="Search Country" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button">Search</button>
+            <form id="searchNameByCountry" action="{{ url('/peoples') }}" method="POST">
+                <div class="input-group mb-3">
+                    @csrf
+                    <input type="text" id="country" class="form-control" name="country" placeholder="Search Country" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <input class="btn btn-outline-secondary" type="submit" value="Search"/>
+                    </div>
                 </div>
-            </div>
+            </form>
+            <div id="demo"></div>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
@@ -70,33 +74,30 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $( function() {
-            var availableTags = [
-            "ActionScript",
-            "AppleScript",
-            "Asp",
-            "BASIC",
-            "C",
-            "C++",
-            "Clojure",
-            "COBOL",
-            "ColdFusion",
-            "Erlang",
-            "Fortran",
-            "Groovy",
-            "Haskell",
-            "Java",
-            "JavaScript",
-            "Lisp",
-            "Perl",
-            "PHP",
-            "Python",
-            "Ruby",
-            "Scala",
-            "Scheme"
-            ];
             $( "#country" ).autocomplete({
-                source: availableTags
+                source: "http://127.0.0.1:8000/countryList"
             });
+            
+            $(document).on("submit", "#searchNameByCountry", function(event){
+                event.preventDefault();
+                
+                let url = $(this).attr("action");
+                let data = $(this).serialize();
+                
+                $.ajax({
+                    url: url, 
+                    method: "post", 
+                    data: data,
+                    dataType: "JSON",
+                    success: function(response){
+                        response.forEach(fetchData);
+                        
+                        function fetchData(item, index) {
+                            document.getElementById("demo").innerHTML += index+1 + ": " + item.name + "<br>"; 
+                        }
+                    } 
+                })
+            })
         } );
     </script>
 </body>
